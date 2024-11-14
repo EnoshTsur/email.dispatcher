@@ -29,7 +29,22 @@ def generate_message(is_dangerous: bool = False) -> Dict:
     fake_sentences = fake.sentences()
     random_index = random.randint(0, len(danger_phrases) - 1)
     return {
+        'id': fake.uuid4(),
         'email': fake.email(),
+        'username': fake.user_name(),
+        'ip_address': fake.ipv4(),
+        'created_at': fake.date_time_between(start_date='-30d', end_date='now').isoformat(),
+        'location': {
+            'latitude': float(fake.latitude()),
+            'longitude': float(fake.longitude()),
+            'city': fake.city(),
+            'country': fake.country_code()
+        },
+        'device_info': {
+            'browser': fake.user_agent(),
+            'os': random.choice(['Windows', 'MacOS', 'Linux', 'iOS', 'Android']),
+            'device_id': fake.uuid4()
+        },
         'sentences': (
             fake_sentences if not is_dangerous
             else fake_sentences + [
